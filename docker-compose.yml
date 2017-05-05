@@ -6,18 +6,18 @@ version: '3'
 
 services:
   zabbix-server:
-    image:  yurkeen/zabbix-server
+    image:  yurkeen/zabbix-server-alpine
     env_file: .env
     ports:
       - "10051:10051"
-    deploy:
-      mode: replicated
-      replicas: 2
+#    deploy:
+#      mode: replicated
+#      replicas: 2
 #      placement:
 #        constraints:
 #          - node.labels.node.type == virtual
-      restart_policy:
-        condition: on-failure
+#      restart_policy:
+#        condition: on-failure
     command: "/entrypoint.sh
       --db_host=mysql
       --db_port=3306
@@ -26,7 +26,7 @@ services:
       --db_password=${MYSQL_PASSWORD}"
 
   zabbix-web:
-    image: yurkeen/zabbix-webui 
+    image: yurkeen/zabbix-webui-alpine
     env_file: .env
     deploy:
 #      labels:
@@ -34,13 +34,13 @@ services:
 #        - traefik.docker.network=traefik_front_net
 #        - traefik.docker.domain=dynamic.domain.tld
 #        - traefik.frontend.rule=Host:zabbix.dynamic.domain.tld
-      mode: replicated
-      replicas: 1
+#      mode: replicated
+#      replicas: 1
 #      placement:
 #        constraints:
 #          - node.labels.node.type == virtual
-      restart_policy:
-        condition: on-failure
+#      restart_policy:
+#        condition: on-failure
     command: "/entrypoint.sh
       --zabbix_server_host=zabbix-server
       --zabbix_server_port=10051
@@ -55,9 +55,9 @@ services:
     env_file: .env
     volumes:
       - dbdata:/var/lib/mysql
-    deploy:
-      mode: replicated
-      replicas: 1
+#    deploy:
+#      mode: replicated
+#      replicas: 1
 #      placement:
 #        constraints:
 #          - node.labels.node.type == virtual

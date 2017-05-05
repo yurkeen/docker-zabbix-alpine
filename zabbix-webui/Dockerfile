@@ -11,4 +11,4 @@ RUN apk --quiet --no-cache add zabbix zabbix-webif php7-apache2 \
 COPY zabbix_httpd.conf /etc/apache2/conf.d/ 
 COPY entrypoint.sh /
 
-CMD ["/usr/sbin/httpd", "-DFOREGROUND"]
+ENTRYPOINT ["/entrypoint.sh"]
