@@ -18,12 +18,11 @@ services:
 #          - node.labels.node.type == virtual
 #      restart_policy:
 #        condition: on-failure
-    command: "/entrypoint.sh
-      --db_host=mysql
-      --db_port=3306
-      --db_name=${MYSQL_DATABASE}
-      --db_user=${MYSQL_USER}
-      --db_password=${MYSQL_PASSWORD}"
+    command: "--db_host=mysql
+              --db_port=3306
+              --db_name=${MYSQL_DATABASE}
+              --db_user=${MYSQL_USER}
+              --db_password=${MYSQL_PASSWORD}"
 
   zabbix-web:
     image: yurkeen/zabbix-webui-alpine
@@ -41,14 +40,13 @@ services:
 #          - node.labels.node.type == virtual
 #      restart_policy:
 #        condition: on-failure
-    command: "/entrypoint.sh
-      --zabbix_server_host=zabbix-server
-      --zabbix_server_port=10051
-      --db_host=mysql
-      --db_port=3306
-      --db_name=${MYSQL_DATABASE}
-      --db_user=${MYSQL_USER}
-      --db_password=${MYSQL_PASSWORD}"
+    command: "--zabbix_server_host=zabbix-server
+              --zabbix_server_port=10051
+              --db_host=mysql
+              --db_port=3306
+              --db_name=${MYSQL_DATABASE}
+              --db_user=${MYSQL_USER}
+              --db_password=${MYSQL_PASSWORD}"
 
   mysql:
     image: percona:latest
