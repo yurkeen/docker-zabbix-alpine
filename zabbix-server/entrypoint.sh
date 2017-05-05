@@ -109,7 +109,7 @@ fi
 }
 
 
-function provision_db{
+function provision_db(){
 
   zcat /usr/share/doc/zabbix-server-mysql-*/create.sql.gz | mysql
 
