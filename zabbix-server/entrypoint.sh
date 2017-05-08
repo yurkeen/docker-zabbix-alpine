@@ -80,7 +80,7 @@ EOF
 function check_mysql_connectivity(){
 while true
 do
-	if [ $(mysql -e exit) -ne 0 ]; then
+	if [ $(mysql -e exit) -eq 0 ]; then
           echo "Connected! Proceeding..."
 	  break
 	else
