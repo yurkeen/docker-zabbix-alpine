@@ -80,13 +80,13 @@ EOF
 function check_mysql_connectivity(){
 while true
 do
-	if [ $(mysql -e exit) -eq 0 ]; then
-          echo "Connected! Proceeding..."
-	  break
-	else
-	  echo "Error: Cannot connect to $DB_HOST:$DB_PORT as $DB_USER. Retrying in 5 sec..."
-          sleep 5
-	fi
+  if $(mysql -e exit); then
+    echo "Connected! Proceeding..."
+    break
+  else
+    echo "Error: Cannot connect to $DB_HOST:$DB_PORT as $DB_USER. Retrying in 5 sec...";
+    sleep 5
+  fi
 done
 
 }
@@ -96,11 +96,10 @@ function check_db_exists(){
 CHK_TABLE="users"
 SOURCE_DB="zabbix"
 
-CHK_QUERY=$(mysql -e "select COUNT(*) FROM information_schema.tables \
-	              WHERE table_schema='${CHK_TABLE}' AND table_name='${SOURCE_DB}';")
+TEST_QUERY="select COUNT(*) FROM ${CHK_TABLE};"
 
-if [ $CHK_QUERY -eq 1 ];then
-  echo "Database present. Proceeding..."
+if $(mysql -e "$TEST_QUERY" > /dev/null );then
+  return 0
 else
   echo "Database not present."
   return 1
@@ -110,8 +109,16 @@ fi
 
 
 function provision_db(){
+  echo "Trying to provision a new database..."
 
-  zcat /usr/share/doc/zabbix-server-mysql-*/create.sql.gz | mysql
+  cat /usr/share/zabbix/database/mysql/schema.sql | mysql && \
+  echo "1/3 Schema created..." && \
+  \
+  cat /usr/share/zabbix/database/mysql/images.sql | mysql && \
+  echo "2/3 Images loaded into DB..." && \
+  \
+  cat /usr/share/zabbix/database/mysql/data.sql | mysql && \
+  echo "3/3 Data loaded. Database import completed!"
 
 }
 
@@ -128,11 +135,14 @@ update_mysql_client_config
 
 check_mysql_connectivity
 
-if [ $(check_db_exists) ]; then
+if $(check_db_exists); then
+  echo "Database is present."
   update_zabbix_config
 else
   provision_db && check_db_exists || ( echo "Exiting..." && exit 1)
-fi  
+fi
 
 
 /usr/sbin/zabbix_server --foreground --config /etc/zabbix/zabbix_server.conf
+
+
