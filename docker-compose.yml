@@ -27,6 +27,8 @@ services:
   zabbix-web:
     image: yurkeen/zabbix-webui-alpine
     env_file: .env
+    ports:
+      - "80:80"
     deploy:
 #      labels:
 #        - traefik.port=80
