@@ -80,12 +80,12 @@ EOF
 function check_mysql_connectivity(){
 while true
 do
-	if [ $(mysql -e exit) ]; then
+	if [ $(mysql -e exit) -ne 0 ]; then
           echo "Connected! Proceeding..."
 	  break
 	else
 	  echo "Error: Cannot connect to $DB_HOST:$DB_PORT as $DB_USER. Retrying in 5 sec..."
-          sleep 1
+          sleep 5
 	fi
 done
 
