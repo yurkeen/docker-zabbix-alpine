@@ -137,11 +137,11 @@ check_mysql_connectivity
 
 if $(check_db_exists); then
   echo "Database is present."
-  update_zabbix_config
 else
   provision_db && check_db_exists || ( echo "Exiting..." && exit 1)
 fi
 
+update_zabbix_config
 
 /usr/sbin/zabbix_server --foreground --config /etc/zabbix/zabbix_server.conf
 
