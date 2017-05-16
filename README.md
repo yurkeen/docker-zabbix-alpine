@@ -16,7 +16,7 @@ The zabbix web UI should be available at your host's IP (or 127.0.0.1) port 80.
 
 ## Alerts to Slack
 
-`/usr/share/zabbix/alertscripts/slack/slack-message.sh` is being added to the image now. To set alerts you'll need:
+`/usr/share/zabbix/alertscripts/slack/slack-message.sh` is being added to the image now. To send alerts using Slack you'll need:
 
 1. Set environment var `WEBHOOK_URL="https://hooks.slack.com/services/ZQXXXXXXX/YYXXXFFFEEE/skskdjIdjr8dfhfxf` to your Slack Teams' Webhook URL
 2. Add new media type 'Slack Message' in *Administration ==> Media Types*:
