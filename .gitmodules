@@ -1,0 +1,3 @@
+[submodule "zabbix-server/alertscripts/slack"]
+	path = zabbix-server/alertscripts/slack
+	url = https://github.com/yurkeen/slack-message-sh.git
